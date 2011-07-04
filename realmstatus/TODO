@@ -1,0 +1,4 @@
+*   Move realm retrieval to a thread (requires using a data model rather 
+    than accessing the GUI directly)
+*   Separate logic and view (and model) by redesigning the layout in
+    QtDesigner and exporting it.
