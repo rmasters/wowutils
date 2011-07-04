@@ -62,11 +62,15 @@ class Main(QMainWindow):
         
         self.realmLayout.addWidget(rContainer)
     
+    def showOptions(self):
+        Options().exec_()
+    
     def setup_menubar(self):
         # Options entry
         options = QtGui.QAction("Options", self)
         options.setShortcut("Ctrl+O")
         options.setStatusTip("Change your region and favourite realms")
+        self.connect(options, QtCore.SIGNAL("triggered()"), self.showOptions)
         
         # Exit entry
         exit = QtGui.QAction("Exit", self)
@@ -81,6 +85,37 @@ class Main(QMainWindow):
         view = menubar.addMenu("&View")
         view.addAction(QtGui.QAction("All realms", self))
         view.addAction(QtGui.QAction("Favourite realms", self))
+
+class Options(QDialog):
+    def __init__(self):
+        QDialog.__init__(self)
+        
+        self.setupUi()
+    
+    def setupUi(self):
+        layout = QVBoxLayout(self)
+        self.setLayout(layout)
+        
+        group = QGroupBox("Region and favourite realm selection")
+        layout.addWidget(group)
+        groupLayout = QVBoxLayout(group)
+        group.setLayout(groupLayout)
+        
+        """Region select"""
+        region = QComboBox()
+        region.addItem("Europe", QVariant(battlenet.EUROPE))
+        region.addItem("United States", QVariant(battlenet.UNITED_STATES))
+        region.addItem("Korea", QVariant(battlenet.KOREA))
+        region.addItem("Taiwan", QVariant(battlenet.TAIWAN))
+        self.connect(region, QtCore.SIGNAL("QtSig()"), self.updateRegion)
+        
+        groupLayout.addWidget(QLabel("Your region"))
+        groupLayout.addWidget(region)
+        
+        """Realm select"""
+    
+    def updateRegion(self):
+        pass
 
 if __name__ == "__main__":
     conn = Connection()
